@@ -13,7 +13,7 @@ if (!(Test-Path "ffmpeg.exe")) {
 }
 
 # 2. Ask for the URL
-$url = Read-Host -Prompt "Paste your YouTube URL here"
+$url = Read-Host -Prompt "Paste your URL here"
 
 # 3. Run the download (Forces 1080p MP4 with sound)
 Write-Host "Starting 1080p Download..." -ForegroundColor Green
