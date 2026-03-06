@@ -1,7 +1,5 @@
 # 1. Setup Phase: Check for tools once at the start
-.\yt-dlp.exe -U
-
-if (!(Test-Path "yt-dlp.exe")) {
+if (Test-Path "yt-dlp.exe") { .\yt-dlp.exe -U }
     Write-Host "Downloading yt-dlp..." -ForegroundColor Cyan
     Invoke-WebRequest -Uri "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe" -OutFile "yt-dlp.exe"
 }
