@@ -1,11 +1,14 @@
 # 1. Setup Phase: Check for tools once at the start
-if (Test-Path "yt-dlp.exe") { .\yt-dlp.exe -U }
-    Write-Host "Downloading yt-dlp..." -ForegroundColor Cyan
+if (Test-Path "yt-dlp.exe") {
+    Write-Host "Checking for yt-dlp updates..." -ForegroundColor Gray
+    .\yt-dlp.exe -U
+} else {
+    Write-Host "yt-dlp not found. Downloading..." -ForegroundColor Cyan
     Invoke-WebRequest -Uri "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe" -OutFile "yt-dlp.exe"
 }
 
 if (!(Test-Path "ffmpeg.exe")) {
-    Write-Host "Downloading FFmpeg..." -ForegroundColor Cyan
+    Write-Host "FFmpeg not found. Downloading dependencies..." -ForegroundColor Cyan
     Invoke-WebRequest -Uri "https://github.com/ffbinaries/ffbinaries-prebuilt/releases/download/v4.4.1/ffmpeg-4.4.1-win-64.zip" -OutFile "ffmpeg.zip"
     Expand-Archive -Path "ffmpeg.zip" -DestinationPath "." -Force
     Remove-Item "ffmpeg.zip"
