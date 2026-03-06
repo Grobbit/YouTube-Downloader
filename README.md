@@ -4,3 +4,4 @@ Create a folder titled Ytdownloader (or whatever you want.) Paste this code into
 Note: When you try to open the file (of the yt video you just downloaded) it may say that you have to install the AV1 Video Extension, don't worry though, it's free.
 
 Note: Remember, yt-dlp isn't limited to just YouTube, it works for many many sites.
+This script is pretty good if I may so myself, I need to update the FFmpeg source, but it will handle playlists automatically (if you put in a playlist link it will ask if you want the full thing or a single video, no more cropping links down to the &), it uses a while ($true) loop to make it so you don't have to run the script every single time, simply open, use to the fullest, then close whenever you want. It atutomatically handles yt-dlp and FFmpeg, and it automatically updates to the newest yt-dlp so you don't have a broken old one.
