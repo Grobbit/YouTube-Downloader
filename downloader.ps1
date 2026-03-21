@@ -16,12 +16,12 @@ if (!(Test-Path "ffmpeg.exe")) {
 }
 
 # --- Session Preferences ---
-$quality = Read-Host -Prompt "Enter Max Quality (e.g., 720, 1080, 2160)"
-$audioOnly = Read-Host -Prompt "Download Audio Only? (y/n)"
-if ($audioOnly -eq "y") { 
+$res = Read-Host -Prompt "Enter Max Quality (e.g., 720, 1080, 2160)"
+$audioMode = Read-Host -Prompt "Download Audio Only? (y/n)"
+if ($audioMode -eq "y") { 
     $formatString = "-x --audio-format mp3" 
 } else { 
-    $formatString = "-f `"bestvideo[height<=$quality][ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best`" --merge-output-format mp4" 
+    $formatArgs = "-f `"bestvideo[height<=$quality][ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best`" --merge-output-format mp4" 
 }
 
 # 2. The Loop Phase: This keeps the window open for new links
