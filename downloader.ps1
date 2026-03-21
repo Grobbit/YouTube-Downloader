@@ -14,6 +14,15 @@ if (!(Test-Path "ffmpeg.exe")) {
     Remove-Item "ffmpeg.zip"
 }
 
+# --- Session Preferences ---
+$quality = Read-Host -Prompt "Enter Max Quality (e.g., 720, 1080, 2160)"
+$audioOnly = Read-Host -Prompt "Download Audio Only? (y/n)"
+if ($audioOnly -eq "y") { 
+    $formatString = "-x --audio-format mp3" 
+} else { 
+    $formatString = "-f `"bestvideo[height<=$quality][ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best`" --merge-output-format mp4" 
+}
+
 # 2. The Loop Phase: This keeps the window open for new links
 while ($true) {
     Clear-Host
@@ -22,6 +31,17 @@ while ($true) {
 
     # Exit condition
     if ($url -eq "exit") { break }
+    # Reset Settings Trigger
+    if ($url -eq "change") {
+        $res = Read-Host -Prompt "New Max Resolution (720, 1080, 2160)"
+        $audioMode = Read-Host -Prompt "Audio Only? (y/n)"
+        if ($audioMode -eq "y") {
+            $formatArgs = "-x --audio-format mp3"
+        } else {
+            $formatArgs = "-f `"bestvideo[height<=$res][ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best`" --merge-output-format mp4"
+        }
+        continue # Skips the rest of the loop and goes back to "Paste URL"
+    }
 
     if (![string]::IsNullOrWhiteSpace($url)) {
         
@@ -39,8 +59,12 @@ while ($true) {
 
         # 4. Run the download
         Write-Host "Starting Download..." -ForegroundColor Green
-        .\yt-dlp.exe $playlistFlag -f "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best" --merge-output-format mp4 $url
-
+        # 4. Run the download
+        Write-Host "Starting Download (Res: $res | Audio: $audioMode)..." -ForegroundColor Green
+        
+        # We use Start-Process to handle the complex argument string safely
+        $allArgs = "$playlistFlag $formatArgs `"$url`""
+        Invoke-Expression ".\yt-dlp.exe $allArgs"
         Write-Host "`nDone! Check your folder." -ForegroundColor Yellow
         Write-Host "Press any key to grab another video..." -ForegroundColor Gray
         $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
