@@ -1,3 +1,4 @@
+Set-Location -Path $PSScriptRoot
 # 1. Setup Phase: Check for tools once at the start
 if (Test-Path "yt-dlp.exe") {
     Write-Host "Checking for yt-dlp updates..." -ForegroundColor Gray
