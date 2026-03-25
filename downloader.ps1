@@ -58,10 +58,18 @@ while ($true) {
             }
         }
 
+    
         # 4. Run the download
-        Write-Host "Starting Download..." -ForegroundColor Green
-        # 4. Run the download
-        Write-Host "Starting Download (Res: $res | Audio: $audioMode)..." -ForegroundColor Green
+Write-Host "Starting Download (Res: $res | Audio: $audioMode)..." -ForegroundColor Green
+
+# Stealth flags to bypass server-side throttling on generic sites
+$stealthFlags = '--impersonate "chrome" --referer "https://www.supercartoons.net/" --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"'
+
+# Combine everything
+$allArgs = "$playlistFlag $formatArgs $stealthFlags `"$url`""
+
+# Execute
+Invoke-Expression ".\yt-dlp.exe $allArgs"
         
         # We use Start-Process to handle the complex argument string safely
         $allArgs = "$playlistFlag $formatArgs `"$url`""
