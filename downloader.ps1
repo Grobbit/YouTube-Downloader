@@ -62,11 +62,14 @@ while ($true) {
         # 4. Run the download
 Write-Host "Starting Download (Res: $res | Audio: $audioMode)..." -ForegroundColor Green
 
-# Stealth flags to bypass server-side throttling on generic sites
-$stealthFlags = '--impersonate "chrome" --referer "https://www.supercartoons.net/" --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"'
+# The "JW Player/Generic" Speed Pack:
+# --concurrent-fragments: Opens multiple connections to bypass the per-connection speed cap.
+# --buffer-size: Prevents the "crawl" by keeping a larger chunk of data in memory.
+# --no-part: Prevents Windows file-locking lag on many small chunks.
+$jwBypass = "--concurrent-fragments 16 --buffer-size 64K --no-part --impersonate chrome"
 
 # Combine everything
-$allArgs = "$playlistFlag $formatArgs $stealthFlags `"$url`""
+$allArgs = "$playlistFlag $formatArgs $jwBypass `"$url`""
 
 # Execute
 Invoke-Expression ".\yt-dlp.exe $allArgs"
