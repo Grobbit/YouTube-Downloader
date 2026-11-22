@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: youtube-downloader
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /healthz
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: DOWNLOAD_DIR
+        value: /tmp/ytdl-web
+      - key: JOB_TTL_SECONDS
+        value: 7200
+      - key: YTDLP_AUTO_UPDATE
+        value: 1

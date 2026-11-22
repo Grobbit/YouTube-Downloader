@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YouTube Downloader</title>
+  <meta name="description" content="A small yt-dlp and FFmpeg downloader. Pick a quality, paste a link, get your file.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="shell">
+    <header class="masthead">
+      <div class="brand">
+        <span class="mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 4v11"></path><path d="m7.5 10.5 4.5 4.5 4.5-4.5"></path><path d="M4.5 19h15"></path>
+          </svg>
+        </span>
+        <h1>YouTube Downloader</h1>
+      </div>
+      <p class="tagline">Videos in 1080p with audio, or audio-only MP3. Same engine as the PowerShell script &mdash; now in your browser.</p>
+      <p class="version">yt-dlp {{ ytdlp_version }} &middot; FFmpeg ready</p>
+    </header>
+
+    <section class="card" aria-label="Download form">
+      <form id="form" autocomplete="off">
+        <label class="field">
+          <span class="label">Link</span>
+          <input id="url" name="url" type="text" inputmode="url" placeholder="https://www.youtube.com/watch?v=..." required>
+        </label>
+
+        <div class="field">
+          <span class="label">Max quality</span>
+          <div class="chips" role="radiogroup" aria-label="Max quality">
+            <label class="chip"><input type="radio" name="quality" value="720"><span>720p</span></label>
+            <label class="chip"><input type="radio" name="quality" value="1080" checked><span>1080p</span></label>
+            <label class="chip"><input type="radio" name="quality" value="2160"><span>2160p</span></label>
+            <label class="chip custom"><input type="radio" name="quality" value="custom"><span>Other</span></label>
+            <input id="customQuality" class="custom-input" type="number" min="144" max="4320" step="1" placeholder="e.g. 1440" aria-label="Custom max quality" hidden>
+          </div>
+        </div>
+
+        <label class="switch">
+          <input id="audioOnly" type="checkbox">
+          <span class="track" aria-hidden="true"><span class="thumb"></span></span>
+          <span class="switch-text">Audio only <em>(MP3)</em></span>
+        </label>
+
+        <div id="playlist" class="notice" hidden>
+          <p class="notice-title">Playlist detected</p>
+          <p class="notice-body">Download the whole playlist, or just the single video?</p>
+          <div class="chips">
+            <label class="chip"><input type="radio" name="playlist" value="all"><span>All videos</span></label>
+            <label class="chip"><input type="radio" name="playlist" value="single" checked><span>Single video</span></label>
+          </div>
+        </div>
+
+        <button id="submit" class="primary" type="submit">Download</button>
+        <p id="error" class="error" role="alert" hidden></p>
+      </form>
+
+      <section id="progress" class="progress" hidden aria-live="polite">
+        <div class="progress-head">
+          <span id="statusText">Starting download&hellip;</span>
+          <span id="percentText" class="percent">0%</span>
+        </div>
+        <div class="bar"><div id="barFill" class="bar-fill"></div></div>
+        <p id="detail" class="detail"></p>
+      </section>
+
+      <section id="result" class="result" hidden aria-live="polite">
+        <p class="result-title">Done! Your file is ready.</p>
+        <ul id="files" class="files"></ul>
+        <div class="result-actions">
+          <a id="zipLink" class="ghost" href="#" hidden>Download all as .zip</a>
+          <button id="again" class="primary small" type="button">Grab another</button>
+        </div>
+      </section>
+    </section>
+
+    <footer class="foot">
+      <p>Powered by <a href="https://github.com/yt-dlp/yt-dlp" target="_blank" rel="noreferrer">yt-dlp</a> and FFmpeg. Works on far more than YouTube.</p>
+      <p class="muted">Files are cleaned up two hours after a download finishes.</p>
+    </footer>
+  </main>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
